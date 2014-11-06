@@ -1,31 +1,35 @@
 {
-  "name": "quilljs-renderer",
-  "version": "0.0.8",
-  "description": "Renders an insert-only Quilljs delta into various format like HTML and Markdown",
+  "name": "convert-rich-text",
+  "version": "0.0.1",
+  "description": "Facilities for converting an insert-only rich-text delta into various formats like HTML and Markdown",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/UmbraEngineering/quilljs-renderer"
+    "url": "git://github.com/thomsbg/convert-rich-text"
   },
   "keywords": [
+    "rich-text",
     "quilljs",
     "ot",
     "delta",
     "html",
     "markdown",
-    "render"
+    "convert"
   ],
-  "author": "James Brumond <james@jbrumond.me> (http://www.jbrumond.me)",
+  "author": "Blake Thomson <thomsbg@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/UmbraEngineering/quilljs-renderer/issues"
+    "url": "https://github.com/thomsbg/convert-rich-text/issues"
   },
-  "homepage": "https://github.com/UmbraEngineering/quilljs-renderer",
+  "homepage": "https://github.com/thomsbg/convert-rich-text",
   "dependencies": {
     "merge-recursive": "0.0.3",
     "stringformat": "0.0.5"
+  },
+  "devDependencies": {
+    "mocha": "^2.0.1"
   }
 }
