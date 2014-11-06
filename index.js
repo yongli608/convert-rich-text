@@ -31,7 +31,7 @@ exports = module.exports = function(delta, format, options) {
 
   options = merge.recursive({}, format.defaults || {}, options || {});
 
-  return format.convert(delta, options);
+  return format.convert(ops, options);
 };
 
 //
@@ -86,7 +86,7 @@ exports.toLines = function toLines(ops) {
     // This is an EOL marker
     if (op.insert === '\n') {
       line.attributes = op.attributes;
-      newline();
+      if (i < ops.length - 1) newline();
     }
 
     // If this op is an embed, it belongs on its own line
