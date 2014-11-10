@@ -20,9 +20,7 @@ exports.defaults = {
     bold: '<b>{content}</b>',
     italic: '<i>{content}</i>',
     underline: '<u>{content}</u>',
-    strikethrough: '<s>{content}</s>',
-    color: '<span style="color:{color}">{content}</span>',
-    font: '<span style="font-family:{font}">{content}</span>',
+    strikethrough: '<s>{content}</s>'
   }
 };
 
