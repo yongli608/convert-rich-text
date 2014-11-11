@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/thomsbg/convert-rich-text",
   "dependencies": {
+    "html-generate": "0.0.2",
     "merge-recursive": "0.0.3",
     "stringformat": "0.0.5"
   },

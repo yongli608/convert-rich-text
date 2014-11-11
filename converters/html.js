@@ -1,26 +1,59 @@
 var merge = require('merge-recursive');
-var format = require('stringformat');
+var HTML = require('html-generate');
 var toLines = require('../index').toLines;
+
+var embeds = {
+  1: 'image'
+};
 
 exports.defaults = {
   embed: {
-    1: '<img src="{image}" alt="{alt}" />'
+    image: {
+      tag: 'img',
+      attribute: 'src'
+    }
   },
   block: {
-    default: '<p>{content}</p>',
-    firstheader: '<h1>{content}</h1>',
-    secondheader: '<h2>{content}</h2>',
-    thirdheader: '<h3>{content}</h3>',
-    bullet: '<ul><li>{content}</li></ul>',
-    list: '<ol><li>{content}</li></ol>'
+    default: {
+      tag: 'p'
+    },
+    firstheader: {
+      tag: 'h1'
+    },
+    secondheader: {
+      tag: 'h2'
+    },
+    thirdheader: {
+      tag: 'h3'
+    },
+    bullet: {
+      parentTag: 'ul',
+      tag: 'li'
+    },
+    list: {
+      parentTag: 'ol',
+      tag: 'li'
+    }
   },
   inline: {
-    default: '{content}',
-    link: '<a href="{link}">{content}</a>',
-    bold: '<b>{content}</b>',
-    italic: '<i>{content}</i>',
-    underline: '<u>{content}</u>',
-    strikethrough: '<s>{content}</s>'
+    default: {
+    },
+    link: {
+      tag: 'a',
+      attribute: 'href'
+    },
+    bold: {
+      tag: 'b'
+    },
+    italic: {
+      tag: 'i'
+    },
+    underline: {
+      tag: 'u'
+    },
+    strikethrough: {
+      tag: 's'
+    }
   }
 };
 
@@ -33,6 +66,8 @@ exports.defaults = {
 // @return string
 //
 exports.convert = function(delta, options) {
+  var currentParentTag = null;
+
   return toLines(delta).map(function(line, index) {
     var content = line.ops.map(convertOp).join('');
     var attrs = merge({}, line.attributes, { lineNumber: index + 1 });
@@ -45,7 +80,8 @@ exports.convert = function(delta, options) {
   //
   function convertOp(op) {
     if (typeof op.insert === 'number') {
-      return convertTemplate(op.insert, op.attributes, options.embed[op.insert]);
+      var key = embeds[op.insert];
+      return convertFormat(null, op.attributes, key, options.embed[key]);
     } else {
       return convertAll(op.insert, op.attributes, options.inline);
     }
@@ -55,27 +91,35 @@ exports.convert = function(delta, options) {
     var count = 0;
     attrs = attrs || {};
     content = Object.keys(attrs).reduce(function(memo, key) {
-      var template = formats[key];
-      if (template) {
+      var format = formats[key];
+      if (format) {
         count += 1;
-        memo = convertTemplate(memo, attrs, template);
+        memo = convertFormat(memo, attrs, key, format);
       }
       return memo;
     }, content);
     // If none of the formats match the attrs, ensure the default format runs
     if (count === 0) {
-      content = convertTemplate(content, attrs, formats.default);
+      content = convertFormat(content, attrs, 'default', formats.default);
     }
     return content;
   }
 
-  function convertTemplate(content, attrs, template) {
-    var attributes = merge({}, attrs, { content: content });
-
-    if (typeof template === 'function') {
-      template = template(attributes, options);
+  function convertFormat(content, attrs, name, format) {
+    if (format.parentTag) {
+      currentParentTag = format.parentTag;
     }
 
-    return format(template, attributes);
+    if (format.tag) {
+      if (format.attribute) {
+        var a = {};
+        a[format.attribute] = attrs[name];
+        return HTML.element({ tagName: format.tag, html: content, attributes: a });
+      } else {
+        return HTML.element({ tagName: format.tag, html: content });
+      }
+    } else {
+      return content;
+    }
   }
 };
