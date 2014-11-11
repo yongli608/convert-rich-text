@@ -82,10 +82,12 @@ exports.toLines = function toLines(ops) {
 
   newline();
 
-  for (var i = 0, op; (op = ops[i]); i++) {
+  for (var i = 0, op; i < ops.length; i++) {
+    op = ops[i];
+
     // This is an EOL marker
     if (op.insert === '\n') {
-      line.attributes = op.attributes;
+      line.attributes = op.attributes || {};
       if (i < ops.length - 1) newline();
     }
 
@@ -102,8 +104,10 @@ exports.toLines = function toLines(ops) {
     // If this op contains a newline, we will need to break it up
     else if (op.insert.indexOf('\n') >= 0) {
       var chunks = op.insert.split('\n');
-      for (var j = 0, chunk; (chunk = chunks[j]); j++) {
-        line.ops.push({ insert: chunk, attributes: op.attributes });
+      for (var j = 0, chunk; j < chunks.length; j++) {
+        chunk = chunks[j];
+        if (chunk.length > 0)
+          line.ops.push({ insert: chunk, attributes: op.attributes });
         if (j < chunks.length - 1) newline();
       }
     }

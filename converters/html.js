@@ -20,7 +20,7 @@ exports.defaults = {
     bold: '<b>{content}</b>',
     italic: '<i>{content}</i>',
     underline: '<u>{content}</u>',
-    strikethrough: '<s>{content}</s>'
+    strike: '<s>{content}</s>'
   }
 };
 
