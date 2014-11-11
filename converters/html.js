@@ -4,7 +4,7 @@ var toLines = require('../index').toLines;
 
 exports.defaults = {
   embed: {
-    1: '<img src="{image}" alt="{alt}" />'
+    1: '<img src="{image}"/>'
   },
   block: {
     default: '<p>{content}</p>',
@@ -38,7 +38,8 @@ exports.convert = function(delta, options) {
     var attrs = merge({}, line.attributes, { lineNumber: index + 1 });
 
     return convertAll(content, attrs, options.block);
-  }).join('\n');
+  }).join('\n').replace(/<\/(ul|ol)>\n<\1>/g, '\n');
+  // TODO: stop doing this hacky regexp shit
 
   //
   // Render a section of text using style HTML tags like <b> and <i>
