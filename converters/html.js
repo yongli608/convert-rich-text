@@ -17,8 +17,8 @@ exports.defaults = {
   inline: {
     default: '{content}',
     link: '<a href="{link}">{content}</a>',
-    bold: '<b>{content}</b>',
-    italic: '<i>{content}</i>',
+    bold: '<strong>{content}</strong>',
+    italic: '<em>{content}</em>',
     underline: '<u>{content}</u>',
     strike: '<s>{content}</s>'
   }
