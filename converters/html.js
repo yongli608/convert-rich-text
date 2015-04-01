@@ -2,6 +2,20 @@ var merge = require('merge-recursive');
 var format = require('stringformat');
 var toLines = require('../index').toLines;
 
+var PRIORITY = [
+  'bold',
+  'italic',
+  'underline',
+  'strike',
+  'link',
+  'firstheader',
+  'secondheader',
+  'thirdheader',
+  'bullet',
+  'list',
+  'blockquote'
+];
+
 exports.defaults = {
   embed: {
     1: '<img src="{image}"/>'
@@ -12,7 +26,8 @@ exports.defaults = {
     secondheader: '<h2>{content}</h2>',
     thirdheader: '<h3>{content}</h3>',
     bullet: '<ul><li>{content}</li></ul>',
-    list: '<ol><li>{content}</li></ol>'
+    list: '<ol><li>{content}</li></ol>',
+    blockquote: '<blockquote>{content}</blockquote>'
   },
   inline: {
     default: '{content}',
@@ -38,7 +53,8 @@ exports.convert = function(delta, options) {
     var attrs = merge({}, line.attributes, { lineNumber: index + 1 });
 
     return convertAll(content, attrs, options.block);
-  }).join('\n').replace(/<\/(ul|ol)>\n<\1>/g, '\n');
+  }).join('\n')
+    .replace(/<\/(ul|ol|blockquote)>\n<\1>/g, '\n');
   // TODO: stop doing this hacky regexp shit
 
   //
@@ -54,8 +70,11 @@ exports.convert = function(delta, options) {
 
   function convertAll(content, attrs, formats) {
     var count = 0;
-    attrs = attrs || {};
-    content = Object.keys(attrs).reduce(function(memo, key) {
+    var keys = Object.keys(attrs || {}).sort(function(a, b) {
+      return PRIORITY.indexOf(a) <= PRIORITY.indexOf(b) ? -1 : 1;
+    });
+
+    content = keys.reduce(function(memo, key) {
       var template = formats[key];
       if (template) {
         count += 1;
@@ -63,15 +82,17 @@ exports.convert = function(delta, options) {
       }
       return memo;
     }, content);
+
     // If none of the formats match the attrs, ensure the default format runs
     if (count === 0) {
       content = convertTemplate(content, attrs, formats.default);
     }
+
     return content;
   }
 
   function convertTemplate(content, attrs, template) {
-    var attributes = merge({}, attrs, { content: content });
+    var attributes = merge({}, attrs || {}, { content: content });
 
     if (typeof template === 'function') {
       template = template(attributes, options);
