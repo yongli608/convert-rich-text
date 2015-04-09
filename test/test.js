@@ -8,14 +8,17 @@ var formats = {
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
   reverse: function(node) {
-    return document.createTextNode(node.textContent.split('').reverse().join(''));
+    var newNode = document.createTextNode(node.textContent.split('').reverse().join(''));
+    node.parentNode.replaceChild(newNode, node);
+    return newNode;
   },
   repeat: function(node, value) {
-    var wrapper = document.createDocumentFragment();
+    var frag = document.createDocumentFragment();
     for (var i = 0, n = parseInt(value); i < n; i++) {
-      wrapper.appendChild(node.cloneNode(true));
+      frag.appendChild(node.cloneNode(true));
     }
-    return wrapper;
+    node.parentNode.replaceChild(frag, node);
+    return frag;
   }
 };
 var tests = [
