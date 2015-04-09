@@ -84,8 +84,10 @@ convert(delta, {
 
 ## Options
 
-Each line of rich-text is wrapped with a block element (default <div>).
-attribute-, class- and style-based formats wrap text with an inline element if there is no other tag to work on (default <span>).
+Each line of rich-text is wrapped with a block element (default `<div>`).
+
+attribute-, class- and style-based formats wrap text with an inline element if there is no other tag to work on (default `<span>`).
+
 You can change these tags with the `blockTag` and `inlineTag` options:
 
 ```javascript
