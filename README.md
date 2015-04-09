@@ -1,6 +1,6 @@
 # convert-rich-text
 
-Facilities for converting an insert-only rich-text delta into various formats like HTML and Markdown
+Convert a [rich-text](https://github.com/ottypes/rich-text) document (i.e. insert-only delta) into HTML.
 
 ## Install
 
@@ -8,27 +8,36 @@ Facilities for converting an insert-only rich-text delta into various formats li
 $ npm install [--save] convert-rich-text
 ```
 
-## Basic Usage
+## Usage
 
 ```javascript
 var convert = require('convert-rich-text');
+var html = convert(delta, formats, options); // last argument optional
+```
 
+Specify an object of format names and config values, using the same conventions
+as QuillJS:
+
+```javascript
+var convert = require('convert-rich-text');
 var delta = {ops: [
   {insert: 'Hello, World!'},
   {insert: '\n', attributes: {firstheader: true}},
   {insert: 'This is a '},
   {insert: 'demo', attributes: {bold: true}},
   {insert: ' of convert-rich-text\n'},
-  {insert: 1, attributes: {image: 'monkey.png', alt: 'Funny monkey picture'}}
+  {insert: 1, attributes: {image: 'monkey.png'}
 ]};
-
-var html = convert(delta, 'html', {
-  block: {
-    default: '<p id="{lineNumber}">{content}</p>'
-    firstheader: '<h1>{content}</h1>'
-  }
-});
-
+var formats = {
+  firstheader: { type: 'line', tag: 'H1' },
+  bold: { tag: 'EM' },
+  image: { tag: 'IMG', attr: 'src' }
+};
+var options = {
+  blockTag: 'P',
+  inlineTag: 'SPAN'
+};
+var html = convert(delta, formats, options);
 console.log(html);
 ```
 
@@ -37,158 +46,50 @@ Result:
 ```html
 <h1>Hello, World!</h1>
 <p>This is a <b>demo</b> of convert-rich-text</p>
-<p><img src="monkey.png" alt="Funny monkey picture" /></p>
+<p><img src="monkey.png"></p>
 ```
 
-## Converters
+## Formats
 
-You may register new converters by calling `defineConverter` like so:
+The following options are supported for configuring a format (adapted from QuillJS):
 
-```javascript
-var convert = require('convert-rich-text');
-convert.defineConverter('markdown', defaults, convertMarkdown);
+`type: 'line'` -- make this format apply only to the line as a whole (via attributes to newline characters).
+
+`tag: 'B'` -- wrap the applicable text in that tag
+
+`parentTag: 'UL', tag: 'LI'` -- used for line formats to create multi-level tag structures; consecutive lines with the same `parentTag` will share the parent.
+
+`attribute: 'href'` -- set an attribute using the given name and the value from the delta
+
+`style: 'fontSize'` -- set an inline style using the given name and the value from the delta
+
+A format may also be specified as a function of (node, value) for custom behavior. e.g.
+
 ```
-
-Now the following will call the `convertMarkdown()` function with the delta and the passed options merged with the defaults:
-
-```javascript
-convert(delta, 'markdown', options);
-```
-
-## Helpers
-
-### `toLines`
-
-Splits an array of ops into an array of line objects, each with ops and attributes.
-
-Embed operations are forced to live on a new line.
-
-End-of-line operations are interpreted as the attributes for the preceding line. e.g.
-
-```javascript
-var lines = require('./index').toLines([
-  { insert: 'abc\ndef' },
-  { insert: 1, attributes: { image: 'http://i.imgur.com/eOOre.gif' } },
-  { insert: 'xyz' },
-  { insert: '\n', attributes: { align: 'left' } }
-])
-console.log(lines)
-```
-
-Yields
-
-```javascript
-[
-  { ops: [{ insert: 'abc' }, { insert: 'def' }], attributes: {} },
-  { ops: [{ insert: 1, attributes: { image: 'http://i.imgur.com/eOOre.gif' } }], attributes: {} },
-  { ops: [{ insert: 'xyz' }], attributes: { align: 'left' } }
-]
-```
-
-## HTML
-
-The built-in HTML converter uses `toLines` to work with a delta line-by-line. It supports a number of options to allow customization of the final output. For example, you can change the default block format from `<div>` to `<p>` like this:
-
-```javascript
-convert(delta, 'html', {
-  blocm: {
-    default: '<p id="line-{lineNumber}">{content}</p>'
+convert(delta, {
+  // reverse the text contents of the node
+  reverse: function(node) {
+    return document.createTextNode(node.textContent.split('').reverse().join(''));
+  },
+  // repeat the contents N times
+  repeat: function(node, value) {
+    var wrapper = document.createDocumentFragment();
+    for (var i = 0, n = parseInt(value); i < n; i++) {
+      wrapper.appendChild(node.cloneNode(true));
+    }
+    return wrapper;
   }
 });
 ```
 
-The following options are supported:
+## Options
 
-#### inline
-
-Defines formats for given attributes of inline operations. For example, let's say we want to allow @user style references. We could define these in our delta using a new attribute:
-
-```javascript
-var delta = [ {insert: '@user', attributes: { atref: 'user'} } ];
-```
-
-We could render these as links by adding an attribute definition, like this:
+Each line of rich-text is wrapped with a block element (default <div>).
+attribute-, class- and style-based formats wrap text with an inline element if there is no other tag to work on (default <span>).
+You can change these tags with the `blockTag` and `inlineTag` options:
 
 ```javascript
-convert(delta, 'html', {
-  inline: {
-    atref: '<a href="/users/{atref}" class="atref">{content}</a>'
-  }
-})
-```
-
-For another example, we could set up the renderer to handle the `author` attribute set by Quill's authorship module:
-
-```javascript
-convert(delta, 'html', {
-  inline: {
-    author: '<span class="author-{author}">{content}</span>'
-  }
-})
-```
-
-Or, to get a little fancier, we could do the same thing, but switch out the authors' names for simple numbers.
-
-```javascript
-var users = [];
-
-convert(delta, 'html', {
-  inline: {
-    author: function(attrs, options) {
-      var index = users.indexOf(node.data.author);
-      if (index < 0) {
-        index = users.length;
-        users.push(node.data.author);
-      }
-      attrs.authorIndex = index;
-      return '<span class="author-{authorIndex}">{content}</span>'
-    }
-  }
-})
-```
-
-This will output HTML more like this:
-
-```html
-<span class="author-0">Within this document, this user will always be known as author "0", which makes it much easier to write generic CSS to stylize different authors.</span>
-```
-
-#### inline.default
-
-Defines the default inline format, which will be used if no other inline formats are applied to an op. Just as with other format definitions, it may be a function.
-
-Default value:
-
-```html
-{content}
-```
-
-#### block
-
-Similar to the inline config object, the `block` config defines formats to be used for attributes of an entire line.
-
-In addition to the attributes, template strings receive the `lineNumber` and `content` variables.
-
-#### block.default
-
-Similar to inline.default, will be used if no other block formats are applied to a line.
-
-Default value:
-
-```html
-<div id="line-{lineNumber}">{content}</div>
-```
-
-#### embed
-
-Defines formats for embeds of the given values. This option should be an object with number keys. Just as with other format definitions, it may be a function.
-
-Default value:
-
-```javascript
-{
-  1: '<img src="{image}" alt="{alt}" />'
-}
+convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 ```
 
 ## Credit
