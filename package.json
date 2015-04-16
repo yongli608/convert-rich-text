@@ -1,6 +1,6 @@
 {
   "name": "convert-rich-text",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Convert an insert-only rich-text delta into HTML",
   "main": "index.js",
   "scripts": {
