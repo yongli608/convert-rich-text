@@ -31,7 +31,7 @@ var delta = {ops: [
 var formats = {
   firstheader: { type: 'line', tag: 'H1' },
   bold: { tag: 'EM' },
-  image: { tag: 'IMG', attr: 'src' }
+  image: { tag: 'IMG', attribute: 'src' }
 };
 var options = {
   blockTag: 'P',

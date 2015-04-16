@@ -3,8 +3,8 @@ var convert = require('convert-rich-text');
 var formats = {
   bold: { tag: 'B' },
   firstheader: { type: 'line', tag: 'H1' },
-  image: { type: 'embed', tag: 'IMG', attr: 'src' },
-  link: { tag: 'A', attr: 'href' },
+  image: { type: 'embed', tag: 'IMG', attribute: 'src' },
+  link: { tag: 'A', attribute: 'href' },
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
   reverse: function(node) {
