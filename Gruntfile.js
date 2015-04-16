@@ -31,6 +31,7 @@ module.exports = function(grunt) {
         src: [ '<%= pkg.main %>' ],
         dest: './build/<%= pkg.name %>.standalone.js',
         options: {
+          watch: true,
           browserifyOptions: {
             standalone: '<%= pkg.name %>'
           }
@@ -40,13 +41,6 @@ module.exports = function(grunt) {
       // have been created with an --external parameter. See
       // browser/test/index.html for an example.
       require: {
-        src: [ '<%= pkg.main %>' ],
-        dest: './build/<%= pkg.name %>.require.js',
-        options: {
-          alias: [ '<%= pkg.main %>:<%= pkg.name %>' ]
-        }
-      },
-      watch: {
         src: [ '<%= pkg.main %>' ],
         dest: './build/<%= pkg.name %>.require.js',
         options: {
@@ -64,6 +58,7 @@ module.exports = function(grunt) {
         dest: './build/tests.js',
         options: {
           external: [ '<%= pkg.name %>' ],
+          watch: true,
           // Embed source map for tests
           debug: true
         }

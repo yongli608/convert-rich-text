@@ -25,28 +25,30 @@ var tests = [
   {
     desc: 'Simple inline tags',
     delta: { ops: [
-      {insert: 'Hello, World!\n', attributes: {bold: true}}
+      {insert: 'Hello, '},
+      {insert: 'World!\n', attributes: {bold: true}}
     ]},
     expected:
-      '<p><b>Hello, World!</b></p>'
+      '<p>Hello, <b>World!</b></p>'
   },
   {
     desc: 'Line formats, embeds, and attributes',
     delta: { ops: [
       {insert: 'Hello, World!\nThis is a second line.', attributes: {bold: true}},
       {insert: '\n', attributes: {firstheader: true}},
-      {insert: 'This is a demo of convert-rich-text'},
+      {insert: 'This is a demo of convert-rich-text '},
       {insert: 1, attributes: {
         image: 'http://i.imgur.com/2ockv.gif'
       }},
+      {insert: ' '},
       {insert: 'Google', attributes: {link: 'https://www.google.com'}}
     ]},
     expected:
       '<p><b>Hello, World!</b></p>' +
       '<h1><b>This is a second line.</b></h1>' +
-      '<p>This is a demo of convert-rich-text</p>' +
-      '<p><img src="http://i.imgur.com/2ockv.gif"></p>' +
-      '<p><a href="https://www.google.com">Google</a></p>'
+      '<p>This is a demo of convert-rich-text ' +
+      '<img src="http://i.imgur.com/2ockv.gif"> ' +
+      '<a href="https://www.google.com">Google</a></p>'
   },
   {
     desc: 'Lists',
@@ -65,6 +67,17 @@ var tests = [
       '<li>Should create a parent tag</li></ol>' +
       '<ul><li>Consecutive bullet elements</li>' +
       '<li>Should create a parent tag</li></ul>'
+  },
+  {
+    desc: 'Links',
+    delta: { ops: [
+      {attributes:{bold:true},insert:'hello'},
+      {insert:' '},
+      {attributes:{link:'http://vox.com'},insert:'world'},
+      {insert:' this works...?\n'}
+    ]},
+    expected:
+      '<p><b>hello</b> <a href="http://vox.com">world</a> this works...?</p>'
   },
   {
     desc: 'Custom',
