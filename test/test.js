@@ -80,6 +80,17 @@ var tests = [
       '<p><b>hello</b> <a href="http://vox.com">world</a> this works...?</p>'
   },
   {
+    desc: 'Link inside list',
+    delta: { ops: [
+      {insert: 'Some text '},
+      {insert: 'a link', attributes: {link: 'http://vox.com'}},
+      {insert: ' more text'},
+      {insert: '\n', attributes: {list: true}}
+    ]},
+    expected:
+      '<ol><li>Some text <a href="http://vox.com">a link</a> more text</li></ol>'
+  },
+  {
     desc: 'Custom',
     delta: { ops: [
       {insert: 'Hello World!', attributes: {reverse: true}},
