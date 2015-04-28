@@ -38,7 +38,7 @@ watch:
 lint:
 	$(JSHINT) --verbose .
 
-test:
+test: $(BUNDLE) $(TEST_BUNDLE)
 	$(MOCHA) test/index.html
 
 server:
