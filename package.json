@@ -6,9 +6,8 @@
   "scripts": {
     "info": "make info",
     "lint": "make lint",
-    "server": "make server",
-    "test": "make test",
-    "watch": "make watch"
+    "start": "make start",
+    "test": "make test"
   },
   "repository": {
     "type": "git",

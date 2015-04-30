@@ -20,7 +20,7 @@ ifneq ($(wildcard lib),)
 	SRC += $(shell find lib -type f -name '*.js')
 endif
 
-.PHONY: all clean info watch lint test server
+.PHONY: all clean info start lint test
 
 all: $(BUNDLE) $(TEST_BUNDLE)
 
@@ -31,9 +31,10 @@ info:
 	@echo "Source:" $(SRC)
 	@echo "Test Source:" $(TEST_SRC)
 
-watch:
-	$(WATCHIFY) --verbose -x $(EXPORT) -o $(TEST_BUNDLE) $(TEST_ENTRY) &
-	$(WATCHIFY) --verbose -r $(EXPORT) -o $(BUNDLE) $(ENTRY)
+start:
+	$(HTTP_SERVER) &
+	$(WATCHIFY) --verbose --debug --external $(EXPORT) --outfile $(TEST_BUNDLE) $(TEST_ENTRY) &
+	$(WATCHIFY) --verbose --debug --require $(EXPORT) --outfile $(BUNDLE) $(ENTRY)
 
 lint:
 	$(JSHINT) --verbose .
@@ -41,14 +42,11 @@ lint:
 test: $(BUNDLE) $(TEST_BUNDLE)
 	$(MOCHA) test/index.html
 
-server:
-	$(HTTP_SERVER)
-
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 $(BUNDLE): $(BUILD_DIR) $(SRC)
-	$(BROWSERIFY) -r $(EXPORT) -o $(BUNDLE) $(ENTRY)
+	$(BROWSERIFY) --debug --require $(EXPORT) --outfile $(BUNDLE) $(ENTRY)
 
 $(TEST_BUNDLE): $(BUILD_DIR) $(TEST_SRC)
-	$(BROWSERIFY) -x $(EXPORT) -o $(TEST_BUNDLE) $(TEST_ENTRY)
+	$(BROWSERIFY) --debug --external $(EXPORT) --outfile $(TEST_BUNDLE) $(TEST_ENTRY)
