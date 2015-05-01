@@ -61,24 +61,32 @@ The following options are supported for configuring a format (adapted from Quill
 
 `attribute: 'href'` -- set an attribute using the given name and the value from the delta
 
+`class: 'cursor-'` -- add a class with the given prefix, e.g. convert({ ops: [{ insert: 'hello', attributes: { cursor: 1234 } }] }, { cursor: { class: 'cursor-' })` => `<span class="cursor-1234">hello</span>`
+
 `style: 'fontSize'` -- set an inline style using the given name and the value from the delta
 
-A format may also be specified as a function of (node, value) for custom behavior. e.g.
+`add: function(node, value)` -- a hook for custom behavior, runs after logic for other options. e.g.
 
-```
+```javascript
 convert(delta, {
-  // reverse the text contents of the node
-  reverse: function(node) {
-    return document.createTextNode(node.textContent.split('').reverse().join(''));
-  },
-  // repeat the contents N times
-  repeat: function(node, value) {
-    var wrapper = document.createDocumentFragment();
-    for (var i = 0, n = parseInt(value); i < n; i++) {
-      wrapper.appendChild(node.cloneNode(true));
+  // wrap in a span, and set data attributes,
+  // e.g. `{insert: 'hello', { data: { foo: 'bar' } } }` => `<span data-foo="bar">hello</span>`
+  data: { tag: 'span', add: function(node, data) {
+    Object.keys(data).forEach(function(key) {
+      node.dataset[key] = data[key];
+    });
+    return node;
+  } },
+  // repeat the line N times
+  // e.g. `{insert: 'hello\n', { times: 3 } }` => `<p>hello</p><p>hello</p><p>hello</p>`
+  repeat: { type: 'line', add: function(node, value) {
+    var clone = node;
+    for (var i = 1, n = parseInt(value); i < n; i++) {
+      clone = node.cloneNode(true);
+      node.parentNode.appendChild(clone);
     }
-    return wrapper;
-  }
+    return clone;
+  } }
 });
 ```
 
@@ -93,6 +101,11 @@ You can change these tags with the `blockTag` and `inlineTag` options:
 ```javascript
 convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 ```
+
+## Development
+
+Run `npm start` to spin up a static web server and watchify.
+Open http://localhost:8080/test in a browser to run and debug tests.
 
 ## Credit
 
