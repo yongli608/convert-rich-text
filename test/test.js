@@ -29,7 +29,7 @@ var tests = [
       {insert: 'World!\n', attributes: {bold: true}}
     ]},
     expected:
-      '<p>Hello, <b>World!</b></p>'
+      '<div>Hello, <b>World!</b></div>'
   },
   {
     desc: 'Line formats, embeds, and attributes',
@@ -44,11 +44,11 @@ var tests = [
       {insert: 'Google', attributes: {link: 'https://www.google.com'}}
     ]},
     expected:
-      '<p><b>Hello, World!</b></p>' +
+      '<div><b>Hello, World!</b></div>' +
       '<h1><b>This is a second line.</b></h1>' +
-      '<p>This is a demo of convert-rich-text ' +
+      '<div>This is a demo of convert-rich-text ' +
       '<img src="http://i.imgur.com/2ockv.gif"> ' +
-      '<a href="https://www.google.com">Google</a></p>'
+      '<a href="https://www.google.com">Google</a></div>'
   },
   {
     desc: 'Lists',
@@ -77,7 +77,7 @@ var tests = [
       {insert:' this works...?\n'}
     ]},
     expected:
-      '<p><b>hello</b> <a href="http://vox.com">world</a> this works...?</p>'
+      '<div><b>hello</b> <a href="http://vox.com">world</a> this works...?</div>'
   },
   {
     desc: 'Link inside list',
@@ -99,14 +99,20 @@ var tests = [
       {insert: '\n'}
     ]},
     expected:
-      '<p>!dlroW olleH</p>' +
-      '<p><b>Foo Bar Baz</b><b>Foo Bar Baz</b><b>Foo Bar Baz</b></p>'
+      '<div>!dlroW olleH</div>' +
+      '<div data-foo="bar"><b>Foo Bar Baz</b><b>Foo Bar Baz</b><b>Foo Bar Baz</b></div>'
+  },
+  {
+    desc: 'Change default blockTag',
+    delta: { ops: [{insert: 'Hello world'}]},
+    opts: { blockTag: 'P' },
+    expected: '<p>Hello world</p>'
   }
 ];
 
 tests.forEach(function(test) {
   it(test.desc, function() {
-    var result = convert(test.delta, formats);
+    var result = convert(test.delta, formats, test.opts);
     assert.equal(result, test.expected);
   });
 });
