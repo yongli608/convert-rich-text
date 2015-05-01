@@ -1,25 +1,39 @@
 var assert = require('chai').assert;
 var convert = require('convert-rich-text');
+var dom = require('../lib/dom');
 var formats = {
   bold: { tag: 'B' },
+  color: { style: 'color' },
+  user: { class: 'user-' },
   firstheader: { type: 'line', tag: 'H1' },
   image: { type: 'embed', tag: 'IMG', attribute: 'src' },
   link: { tag: 'A', attribute: 'href' },
+  className: { attribute: 'class' },
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
-  reverse: function(node) {
+  reverse: { add: function(node) {
     var newNode = document.createTextNode(node.textContent.split('').reverse().join(''));
     node.parentNode.replaceChild(newNode, node);
     return newNode;
-  },
-  repeat: function(node, value) {
+  } },
+  repeat: { add: function(node, value) {
     var frag = document.createDocumentFragment();
     for (var i = 0, n = parseInt(value); i < n; i++) {
       frag.appendChild(node.cloneNode(true));
     }
     node.parentNode.replaceChild(frag, node);
     return frag;
-  }
+  } },
+  parent: { add: function(node, value) {
+    dom(node.parentNode).switchTag(value);
+    return node;
+  } },
+  data: { type: 'line', add: function(node, value) {
+    Object.keys(value).forEach(function(key) {
+      node.dataset[key] = value[key];
+    });
+    return node;
+  } }
 };
 var tests = [
   {
@@ -49,6 +63,23 @@ var tests = [
       '<div>This is a demo of convert-rich-text ' +
       '<img src="http://i.imgur.com/2ockv.gif"> ' +
       '<a href="https://www.google.com">Google</a></div>'
+  },
+  {
+    desc: 'classes and styles',
+    delta: { ops: [
+      {insert: 'Hello world', attributes: { color: 'red', user: 1234 }},
+    ]},
+    expected:
+      '<div><span style="color: red; " class="user-1234">Hello world</span></div>'
+  },
+  {
+    desc: 'attribute with implicit span tag',
+    delta: { ops: [
+      {insert: 'hello world', attributes: { className: 'greeting' }},
+      {insert: '\n'}
+    ]},
+    expected:
+      '<div><span class="greeting">hello world</span></div>'
   },
   {
     desc: 'Lists',
@@ -91,12 +122,21 @@ var tests = [
       '<ol><li>Some text <a href="http://vox.com">a link</a> more text</li></ol>'
   },
   {
-    desc: 'Custom',
+    desc: 'Modify parent',
+    delta: { ops: [
+      {insert: 'hello world', attributes: { parent: 'article' } },
+      {insert: '\n', attributes: { firstheader: true } }
+    ]},
+    expected:
+      '<h1>hello world</h1>'
+  },
+  {
+    desc: 'Custom formats',
     delta: { ops: [
       {insert: 'Hello World!', attributes: {reverse: true}},
       {insert: '\n'},
       {insert: 'Foo Bar Baz', attributes: {bold: true, repeat: 3}},
-      {insert: '\n'}
+      {insert: '\n', attributes: { data: {foo: 'bar'}}}
     ]},
     expected:
       '<div>!dlroW olleH</div>' +
