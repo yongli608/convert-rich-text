@@ -37,10 +37,19 @@ var formats = {
 };
 var tests = [
   {
+    desc: 'No formats',
+    delta: { ops: [
+      {insert: 'Hello world\n'}
+    ]},
+    expected:
+      '<div>Hello world</div>'
+  },
+  {
     desc: 'Simple inline tags',
     delta: { ops: [
       {insert: 'Hello, '},
-      {insert: 'World!\n', attributes: {bold: true}}
+      {insert: 'World!', attributes: {bold: true}},
+      {insert: '\n'}
     ]},
     expected:
       '<div>Hello, <b>World!</b></div>'
@@ -55,7 +64,8 @@ var tests = [
         image: 'http://i.imgur.com/2ockv.gif'
       }},
       {insert: ' '},
-      {insert: 'Google', attributes: {link: 'https://www.google.com'}}
+      {insert: 'Google', attributes: {link: 'https://www.google.com'}},
+      {insert: '\n'}
     ]},
     expected:
       '<div><b>Hello, World!</b></div>' +
@@ -68,6 +78,7 @@ var tests = [
     desc: 'classes and styles',
     delta: { ops: [
       {insert: 'Hello world', attributes: { color: 'red', user: 1234 }},
+      {insert: '\n'}
     ]},
     expected:
       '<div><span style="color: red; " class="user-1234">Hello world</span></div>'
