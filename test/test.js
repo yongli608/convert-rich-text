@@ -158,6 +158,11 @@ var tests = [
     delta: { ops: [{insert: 'Hello world'}]},
     opts: { blockTag: 'P' },
     expected: '<p>Hello world</p>'
+  },
+  {
+    desc: 'Line formats with no contents',
+    delta: { ops: [{insert: '\n', attributes: {firstheader: true} }] },
+    expected: '<h1></h1>'
   }
 ];
 
