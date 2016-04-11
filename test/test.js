@@ -166,10 +166,26 @@ var tests = [
   }
 ];
 
-tests.forEach(function(test) {
-  it(test.desc, function() {
-    var result = convert(test.delta, formats, test.opts);
-    assert.equal(result, test.expected);
+describe('client-side', function() {
+  tests.forEach(function(test) {
+    it(test.desc, function() {
+      var result = convert(test.delta, formats, test.opts);
+      assert.equal(result, test.expected);
+    });
+  });
+});
+
+describe('server-side', function() {
+  // Simulate server-side environment by setting document as undefined
+  beforeEach(function() {
+    document = undefined;
+  });
+
+  tests.forEach(function(test) {
+    it(test.desc, function() {
+      var result = convert(test.delta, formats, test.opts);
+      assert.equal(result, test.expected);
+    });
   });
 });
 

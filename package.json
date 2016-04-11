@@ -26,7 +26,9 @@
     "url": "https://github.com/thomsbg/convert-rich-text/issues"
   },
   "homepage": "https://github.com/thomsbg/convert-rich-text",
-  "dependencies": {},
+  "dependencies": {
+    "jsdom": "^6.5.1"
+  },
   "devDependencies": {
     "browserify": "^9.0.8",
     "chai": "^2.2.0",
