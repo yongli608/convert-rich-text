@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/thomsbg/convert-rich-text",
   "dependencies": {
-    "jsdom": "^6.5.1"
+    "jsdom": "^3.1.2"
   },
   "devDependencies": {
     "browserify": "^9.0.8",
