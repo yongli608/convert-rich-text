@@ -1,8 +1,6 @@
-var jsdom = require('jsdom').jsdom;
 var Doc = require('./lib/doc');
 
 module.exports = function(delta, formats, options) {
-  document = jsdom();
   var doc = new Doc(formats, options);
   for (var i = 0; i < delta.ops.length; i++) {
     doc.writeOp(delta.ops[i]);
