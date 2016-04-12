@@ -1,9 +1,6 @@
-var Doc = require('./lib/doc');
+var convert = require('./lib/convert');
 
 module.exports = function(delta, formats, options) {
-  var doc = new Doc(formats, options);
-  for (var i = 0; i < delta.ops.length; i++) {
-    doc.writeOp(delta.ops[i]);
-  }
-  return doc.getHTML();
+  options.document = document;
+  return convert(delta, formats, options);
 };
