@@ -1,6 +1,7 @@
 var assert = require('chai').assert;
-var convert = require('convert-rich-text');
-var dom = require('../lib/dom');
+var browserConvert = require('../browser');
+var serverConvert = require('../index');
+
 var formats = {
   bold: { tag: 'B' },
   color: { style: 'color' },
@@ -11,12 +12,12 @@ var formats = {
   className: { attribute: 'class' },
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
-  reverse: { add: function(node) {
+  reverse: { add: function(dom, node) {
     var newNode = document.createTextNode(node.textContent.split('').reverse().join(''));
     node.parentNode.replaceChild(newNode, node);
     return newNode;
   } },
-  repeat: { add: function(node, value) {
+  repeat: { add: function(dom, node, value) {
     var frag = document.createDocumentFragment();
     for (var i = 0, n = parseInt(value); i < n; i++) {
       frag.appendChild(node.cloneNode(true));
@@ -24,17 +25,18 @@ var formats = {
     node.parentNode.replaceChild(frag, node);
     return frag;
   } },
-  parent: { add: function(node, value) {
+  parent: { add: function(dom, node, value) {
     dom(node.parentNode).switchTag(value);
     return node;
   } },
-  data: { type: 'line', add: function(node, value) {
+  data: { type: 'line', add: function(dom, node, value) {
     Object.keys(value).forEach(function(key) {
       node.dataset[key] = value[key];
     });
     return node;
   } }
 };
+
 var tests = [
   {
     desc: 'No formats',
@@ -169,28 +171,29 @@ var tests = [
 describe('client-side', function() {
   tests.forEach(function(test) {
     it(test.desc, function() {
-      var result = convert(test.delta, formats, test.opts);
+      var result = browserConvert(test.delta, formats, test.opts);
       assert.equal(result, test.expected);
     });
+  });
+
+  it('throws an error for a delta with non-inserts', function() {
+    assert.throws(function() {
+      browserConvert({ ops: [{ insert: 'abc' }, { retain: 3 }] }, formats);
+    }, 'Cannot convert delta with non-insert operations');
   });
 });
 
 describe('server-side', function() {
-  // Simulate server-side environment by setting document as undefined
-  beforeEach(function() {
-    document = undefined;
-  });
-
   tests.forEach(function(test) {
     it(test.desc, function() {
-      var result = convert(test.delta, formats, test.opts);
+      var result = serverConvert(test.delta, formats, test.opts);
       assert.equal(result, test.expected);
     });
   });
-});
 
-it('throws an error for a delta with non-inserts', function() {
-  assert.throws(function() {
-    convert({ ops: [{ insert: 'abc' }, { retain: 3 }] }, formats);
-  }, 'Cannot convert delta with non-insert operations');
+  it('throws an error for a delta with non-inserts', function() {
+    assert.throws(function() {
+      serverConvert({ ops: [{ insert: 'abc' }, { retain: 3 }] }, formats);
+    }, 'Cannot convert delta with non-insert operations');
+  });
 });
