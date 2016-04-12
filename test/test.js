@@ -12,12 +12,12 @@ var formats = {
   className: { attribute: 'class' },
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
-  reverse: { add: function(dom, node) {
+  reverse: { add: function(node) {
     var newNode = document.createTextNode(node.textContent.split('').reverse().join(''));
     node.parentNode.replaceChild(newNode, node);
     return newNode;
   } },
-  repeat: { add: function(dom, node, value) {
+  repeat: { add: function(node, value) {
     var frag = document.createDocumentFragment();
     for (var i = 0, n = parseInt(value); i < n; i++) {
       frag.appendChild(node.cloneNode(true));
@@ -25,11 +25,11 @@ var formats = {
     node.parentNode.replaceChild(frag, node);
     return frag;
   } },
-  parent: { add: function(dom, node, value) {
+  parent: { add: function(node, value, dom) {
     dom(node.parentNode).switchTag(value);
     return node;
   } },
-  data: { type: 'line', add: function(dom, node, value) {
+  data: { type: 'line', add: function(node, value) {
     Object.keys(value).forEach(function(key) {
       node.dataset[key] = value[key];
     });

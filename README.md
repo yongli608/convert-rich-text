@@ -65,7 +65,7 @@ The following options are supported for configuring a format (adapted from Quill
 
 `style: 'fontSize'` -- set an inline style using the given name and the value from the delta
 
-`add: function(node, value)` -- a hook for custom behavior, runs after logic for other options. e.g.
+`add: function(node, value[, dom])` -- a hook for custom behavior, runs after logic for other options. e.g.
 
 ```javascript
 convert(delta, {
