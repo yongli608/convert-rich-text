@@ -8,7 +8,9 @@ var tests = data.tests;
 describe('client-side', function() {
   tests.forEach(function(test) {
     it(test.desc, function(done) {
-      test.opts = {};
+      if (!test.hasOwnProperty('opts')) {
+        test.opts = {};
+      }
       var result = convert(test.delta, formats, test.opts);
       assert.equal(result, test.expected);
       done();
