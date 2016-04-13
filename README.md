@@ -2,6 +2,8 @@
 
 Convert a [rich-text](https://github.com/ottypes/rich-text) document (i.e. insert-only delta) into HTML.
 
+[![Build Status](https://travis-ci.org/thomsbg/convert-rich-text.svg?branch=master)](https://travis-ci.org/thomsbg/convert-rich-text)
+
 ## Install
 
 ```bash
