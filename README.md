@@ -102,6 +102,11 @@ You can change these tags with the `blockTag` and `inlineTag` options:
 convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 ```
 
+## Changelog
+
+- `2.0.0` [Server-side support via jsdom](https://github.com/thomsbg/convert-rich-text/pull/2), node version locked to <=0.12
+- `1.2.1` Beginning of changelog
+
 ## Development
 
 Run `npm start` to spin up a static web server and watchify.
