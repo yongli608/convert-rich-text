@@ -46,5 +46,8 @@
     "phantomjs-prebuilt": "^2.1.7",
     "watchify": "^3.2.0",
     "webpack": "^1.12.15"
+  },
+  "engines": {
+    "node": "<=0.12"
   }
 }
