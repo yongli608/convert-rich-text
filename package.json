@@ -8,7 +8,7 @@
     "info": "make info",
     "lint": "make lint",
     "start": "make start",
-    "test": "karma start"
+    "test": "NODE_ENV=test karma start && mocha test/server/server.js -R spec"
   },
   "repository": {
     "type": "git",

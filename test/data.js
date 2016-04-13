@@ -8,12 +8,14 @@ exports.formats = {
   className: { attribute: 'class' },
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
-  reverse: { add: function(node, value, doc) {
+  reverse: { add: function(node, value, dom) {
+    var doc = dom(node).document;
     var newNode = doc.createTextNode(node.textContent.split('').reverse().join(''));
     node.parentNode.replaceChild(newNode, node);
     return newNode;
   } },
-  repeat: { add: function(node, value, doc) {
+  repeat: { add: function(node, value, dom) {
+    var doc = dom(node).document;
     var frag = doc.createDocumentFragment();
     for (var i = 0, n = parseInt(value); i < n; i++) {
       frag.appendChild(node.cloneNode(true));
@@ -21,13 +23,13 @@ exports.formats = {
     node.parentNode.replaceChild(frag, node);
     return frag;
   } },
-  parent: { add: function(node, value, doc, dom) {
-    dom(node.parentNode, doc).switchTag(value);
+  parent: { add: function(node, value, dom) {
+    dom(node.parentNode).switchTag(value);
     return node;
   } },
   data: { type: 'line', add: function(node, value) {
     Object.keys(value).forEach(function(key) {
-      node.dataset[key] = value[key];
+      node.setAttribute('data-' + key, value[key]);
     });
     return node;
   } }
@@ -78,8 +80,10 @@ exports.tests = [
       {insert: 'Hello world', attributes: { color: 'red', user: 1234 }},
       {insert: '\n'}
     ]},
-    expected:
-      '<div><span style="color: red; " class="user-1234">Hello world</span></div>'
+    expected: {
+      client: '<div><span class="user-1234" style="color: red;">Hello world</span></div>',
+      server: '<div><span style="color: red;" class="user-1234">Hello world</span></div>'
+    }
   },
   {
     desc: 'attribute with implicit span tag',
