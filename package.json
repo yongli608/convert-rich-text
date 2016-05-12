@@ -1,6 +1,6 @@
 {
   "name": "convert-rich-text",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Convert an insert-only rich-text delta into HTML",
   "main": "index.js",
   "browser": "browser.js",
@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/thomsbg/convert-rich-text",
   "dependencies": {
-    "jsdom": "^3.1.2"
+    "jsdom": ">=3.1.2"
   },
   "devDependencies": {
     "browserify": "^9.0.8",
