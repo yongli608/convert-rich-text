@@ -1,6 +1,6 @@
 {
   "name": "convert-rich-text",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Convert an insert-only rich-text delta into HTML",
   "main": "index.js",
   "browser": "browser.js",
@@ -46,8 +46,5 @@
     "phantomjs-prebuilt": "^2.1.7",
     "watchify": "^3.2.0",
     "webpack": "^1.12.15"
-  },
-  "engines": {
-    "node": "<=0.12"
   }
 }

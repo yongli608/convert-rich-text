@@ -106,7 +106,7 @@ convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 
 ## Changelog
 
-- `2.0.1` [Relax jsdom requirement]
+- `2.0.2` [Relax jsdom and node version requirements]
 - `2.0.0` [Server-side support via jsdom](https://github.com/thomsbg/convert-rich-text/pull/2), node version locked to <=0.12
 - `1.2.1` Beginning of changelog
 
