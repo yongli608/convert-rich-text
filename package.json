@@ -1,13 +1,14 @@
 {
   "name": "convert-rich-text",
-  "version": "1.2.1",
+  "version": "2.0.2",
   "description": "Convert an insert-only rich-text delta into HTML",
   "main": "index.js",
+  "browser": "browser.js",
   "scripts": {
     "info": "make info",
     "lint": "make lint",
     "start": "make start",
-    "test": "make test"
+    "test": "NODE_ENV=test karma start && mocha test/server/server.js -R spec"
   },
   "repository": {
     "type": "git",
@@ -26,13 +27,24 @@
     "url": "https://github.com/thomsbg/convert-rich-text/issues"
   },
   "homepage": "https://github.com/thomsbg/convert-rich-text",
-  "dependencies": {},
+  "dependencies": {
+    "jsdom": ">=3.1.2"
+  },
   "devDependencies": {
     "browserify": "^9.0.8",
     "chai": "^2.2.0",
     "http-server": "^0.8.0",
     "jshint": "^2.7.0",
+    "karma": "^0.13.22",
+    "karma-chai": "^0.1.0",
+    "karma-mocha": "^0.2.2",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "karma-phantomjs-shim": "^1.2.0",
+    "karma-source-map-support": "^1.1.0",
+    "karma-webpack": "^1.7.0",
     "mocha-phantomjs": "^3.5.3",
-    "watchify": "^3.2.0"
+    "phantomjs-prebuilt": "^2.1.7",
+    "watchify": "^3.2.0",
+    "webpack": "^1.12.15"
   }
 }

@@ -2,6 +2,8 @@
 
 Convert a [rich-text](https://github.com/ottypes/rich-text) document (i.e. insert-only delta) into HTML.
 
+[![Build Status](https://travis-ci.org/thomsbg/convert-rich-text.svg?branch=master)](https://travis-ci.org/thomsbg/convert-rich-text)
+
 ## Install
 
 ```bash
@@ -65,7 +67,7 @@ The following options are supported for configuring a format (adapted from Quill
 
 `style: 'fontSize'` -- set an inline style using the given name and the value from the delta
 
-`add: function(node, value)` -- a hook for custom behavior, runs after logic for other options. e.g.
+`add: function(node, value[, dom])` -- a hook for custom behavior, runs after logic for other options. e.g.
 
 ```javascript
 convert(delta, {
@@ -101,6 +103,12 @@ You can change these tags with the `blockTag` and `inlineTag` options:
 ```javascript
 convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 ```
+
+## Changelog
+
+- `2.0.2` [Relax jsdom and node version requirements]
+- `2.0.0` [Server-side support via jsdom](https://github.com/thomsbg/convert-rich-text/pull/2), node version locked to <=0.12
+- `1.2.1` Beginning of changelog
 
 ## Development
 

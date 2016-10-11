@@ -1,7 +1,4 @@
-var assert = require('chai').assert;
-var convert = require('convert-rich-text');
-var dom = require('../lib/dom');
-var formats = {
+exports.formats = {
   bold: { tag: 'B' },
   color: { style: 'color' },
   user: { class: 'user-' },
@@ -11,31 +8,34 @@ var formats = {
   className: { attribute: 'class' },
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
-  reverse: { add: function(node) {
-    var newNode = document.createTextNode(node.textContent.split('').reverse().join(''));
+  reverse: { add: function(node, value, dom) {
+    var doc = dom(node).document;
+    var newNode = doc.createTextNode(node.textContent.split('').reverse().join(''));
     node.parentNode.replaceChild(newNode, node);
     return newNode;
   } },
-  repeat: { add: function(node, value) {
-    var frag = document.createDocumentFragment();
+  repeat: { add: function(node, value, dom) {
+    var doc = dom(node).document;
+    var frag = doc.createDocumentFragment();
     for (var i = 0, n = parseInt(value); i < n; i++) {
       frag.appendChild(node.cloneNode(true));
     }
     node.parentNode.replaceChild(frag, node);
     return frag;
   } },
-  parent: { add: function(node, value) {
+  parent: { add: function(node, value, dom) {
     dom(node.parentNode).switchTag(value);
     return node;
   } },
   data: { type: 'line', add: function(node, value) {
     Object.keys(value).forEach(function(key) {
-      node.dataset[key] = value[key];
+      node.setAttribute('data-' + key, value[key]);
     });
     return node;
   } }
 };
-var tests = [
+
+exports.tests = [
   {
     desc: 'No formats',
     delta: { ops: [
@@ -80,8 +80,10 @@ var tests = [
       {insert: 'Hello world', attributes: { color: 'red', user: 1234 }},
       {insert: '\n'}
     ]},
-    expected:
-      '<div><span style="color: red; " class="user-1234">Hello world</span></div>'
+    expected: {
+      client: '<div><span class="user-1234" style="color: red;">Hello world</span></div>',
+      server: '<div><span style="color: red;" class="user-1234">Hello world</span></div>'
+    }
   },
   {
     desc: 'attribute with implicit span tag',
@@ -165,16 +167,3 @@ var tests = [
     expected: '<h1></h1>'
   }
 ];
-
-tests.forEach(function(test) {
-  it(test.desc, function() {
-    var result = convert(test.delta, formats, test.opts);
-    assert.equal(result, test.expected);
-  });
-});
-
-it('throws an error for a delta with non-inserts', function() {
-  assert.throws(function() {
-    convert({ ops: [{ insert: 'abc' }, { retain: 3 }] }, formats);
-  }, 'Cannot convert delta with non-insert operations');
-});

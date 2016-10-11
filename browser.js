@@ -1,8 +1,6 @@
-var jsdom = require('jsdom').jsdom;
 var convert = require('./lib/convert');
 
 module.exports = function(delta, formats, options) {
-  options.document = jsdom();
+  options.document = document;
   return convert(delta, formats, options);
 };
-
