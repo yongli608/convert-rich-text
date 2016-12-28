@@ -9,14 +9,12 @@ exports.formats = {
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
   reverse: { add: function(node, value, dom) {
-    var doc = dom(node).document;
-    var newNode = doc.createTextNode(node.textContent.split('').reverse().join(''));
+    var newNode = node.ownerDocument.createTextNode(node.textContent.split('').reverse().join(''));
     node.parentNode.replaceChild(newNode, node);
     return newNode;
   } },
   repeat: { add: function(node, value, dom) {
-    var doc = dom(node).document;
-    var frag = doc.createDocumentFragment();
+    var frag = node.ownerDocument.createDocumentFragment();
     for (var i = 0, n = parseInt(value); i < n; i++) {
       frag.appendChild(node.cloneNode(true));
     }
