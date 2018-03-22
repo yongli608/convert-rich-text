@@ -8,29 +8,38 @@ exports.formats = {
   className: { attribute: 'class' },
   bullet: { type: 'line', tag: 'LI', parentTag: 'UL' },
   list: { type: 'line', tag: 'LI', parentTag: 'OL' },
-  reverse: { add: function(node, value, dom) {
-    var newNode = node.ownerDocument.createTextNode(node.textContent.split('').reverse().join(''));
-    node.parentNode.replaceChild(newNode, node);
-    return newNode;
-  } },
-  repeat: { add: function(node, value, dom) {
-    var frag = node.ownerDocument.createDocumentFragment();
-    for (var i = 0, n = parseInt(value); i < n; i++) {
-      frag.appendChild(node.cloneNode(true));
+  reverse: {
+    add: function(node) {
+      var newNode = node.ownerDocument.createTextNode(node.textContent.split('').reverse().join(''));
+      node.parentNode.replaceChild(newNode, node);
+      return newNode;
     }
-    node.parentNode.replaceChild(frag, node);
-    return frag;
-  } },
-  parent: { add: function(node, value, dom) {
-    dom(node.parentNode).switchTag(value);
-    return node;
-  } },
-  data: { type: 'line', add: function(node, value) {
-    Object.keys(value).forEach(function(key) {
-      node.setAttribute('data-' + key, value[key]);
-    });
-    return node;
-  } }
+  },
+  repeat: {
+    add: function(node, value) {
+      var frag = node.ownerDocument.createDocumentFragment();
+      for (var i = 0, n = parseInt(value); i < n; i++) {
+        frag.appendChild(node.cloneNode(true));
+      }
+      node.parentNode.replaceChild(frag, node);
+      return frag;
+    }
+  },
+  parent: {
+    add: function(node, value, dom) {
+      dom(node.parentNode).switchTag(value);
+      return node;
+    }
+  },
+  data: {
+    type: 'line',
+    add: function(node, value) {
+      Object.keys(value).forEach(function(key) {
+        node.setAttribute('data-' + key, value[key]);
+      });
+      return node;
+    }
+  }
 };
 
 exports.tests = [
