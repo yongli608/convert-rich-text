@@ -67,9 +67,7 @@ exports.tests = [
       {insert: 'Hello, World!\nThis is a second line.', attributes: {bold: true}},
       {insert: '\n', attributes: {firstheader: true}},
       {insert: 'This is a demo of convert-rich-text '},
-      {insert: 1, attributes: {
-        image: 'http://i.imgur.com/2ockv.gif'
-      }},
+      {insert: {image: 'http://i.imgur.com/2ockv.gif'}},
       {insert: ' '},
       {insert: 'Google', attributes: {link: 'https://www.google.com'}},
       {insert: '\n'}
