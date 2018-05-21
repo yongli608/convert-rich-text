@@ -1,6 +1,6 @@
 {
   "name": "convert-rich-text",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Convert an insert-only rich-text delta into HTML",
   "main": "index.js",
   "browser": "browser.js",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/thomsbg/convert-rich-text"
+    "url": "git://github.com/voxmedia/convert-rich-text"
   },
   "keywords": [
     "rich-text",
@@ -22,9 +22,9 @@
   "author": "Blake Thomson <thomsbg@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/thomsbg/convert-rich-text/issues"
+    "url": "https://github.com/voxmedia/convert-rich-text/issues"
   },
-  "homepage": "https://github.com/thomsbg/convert-rich-text",
+  "homepage": "https://github.com/voxmedia/convert-rich-text",
   "dependencies": {
     "jsdom": "^11.6.2",
     "lodash": "^3.6.0"
