@@ -1,6 +1,6 @@
-var convert = require('./lib/convert');
+var toHtml = require('./lib/export/to_html');
 
 module.exports = function(delta, formats, options) {
   options.document = document;
-  return convert(delta, formats, options);
+  return toHtml(delta, formats, options);
 };

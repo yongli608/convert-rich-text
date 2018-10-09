@@ -1,12 +1,12 @@
 {
   "name": "convert-rich-text",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Convert an insert-only rich-text delta into HTML",
   "main": "index.js",
   "browser": "browser.js",
   "scripts": {
     "lint": "jshint --verbose .",
-    "test": "npm run lint && NODE_ENV=test karma start && NODE_ENV=test mocha test/server/server.js -R spec"
+    "test": "npm run lint && NODE_ENV=test karma start && NODE_ENV=test mocha test/server/*.js -R spec"
   },
   "repository": {
     "type": "git",

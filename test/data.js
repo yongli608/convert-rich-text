@@ -46,7 +46,7 @@ exports.tests = [
   {
     desc: 'No formats',
     delta: { ops: [
-      {insert: 'Hello world\n'}
+      { insert: 'Hello world\n' }
     ]},
     expected:
       '<div>Hello world</div>'
@@ -54,9 +54,9 @@ exports.tests = [
   {
     desc: 'Simple inline tags',
     delta: { ops: [
-      {insert: 'Hello, '},
-      {insert: 'World!', attributes: {bold: true}},
-      {insert: '\n'}
+      { insert: 'Hello, ' },
+      { insert: 'World!', attributes: { bold: true } },
+      { insert: '\n' }
     ]},
     expected:
       '<div>Hello, <b>World!</b></div>'
@@ -64,13 +64,13 @@ exports.tests = [
   {
     desc: 'Line formats, embeds, and attributes',
     delta: { ops: [
-      {insert: 'Hello, World!\nThis is a second line.', attributes: {bold: true}},
-      {insert: '\n', attributes: {firstheader: true}},
-      {insert: 'This is a demo of convert-rich-text '},
-      {insert: {image: 'http://i.imgur.com/2ockv.gif'}},
-      {insert: ' '},
-      {insert: 'Google', attributes: {link: 'https://www.google.com'}},
-      {insert: '\n'}
+      { insert: 'Hello, World!\nThis is a second line.', attributes: { bold: true } },
+      { insert: '\n', attributes: { firstheader: true } },
+      { insert: 'This is a demo of convert-rich-text ' },
+      { insert: { image: 'http://i.imgur.com/2ockv.gif' } },
+      { insert: ' ' },
+      { insert: 'Google', attributes: { link: 'https://www.google.com' } },
+      { insert: '\n' }
     ]},
     expected:
       '<div><b>Hello, World!</b></div>' +
@@ -82,8 +82,8 @@ exports.tests = [
   {
     desc: 'classes and styles',
     delta: { ops: [
-      {insert: 'Hello world', attributes: { color: 'red', user: 1234 }},
-      {insert: '\n'}
+      { insert: 'Hello world', attributes: { color: 'red', user: 1234 } },
+      { insert: '\n' }
     ]},
     expected: {
       client: '<div><span class="user-1234" style="color: red;">Hello world</span></div>',
@@ -93,8 +93,8 @@ exports.tests = [
   {
     desc: 'attribute with implicit span tag',
     delta: { ops: [
-      {insert: 'hello world', attributes: { className: 'greeting' }},
-      {insert: '\n'}
+      { insert: 'hello world', attributes: { className: 'greeting' } },
+      { insert: '\n' }
     ]},
     expected:
       '<div><span class="greeting">hello world</span></div>'
@@ -102,14 +102,14 @@ exports.tests = [
   {
     desc: 'Lists',
     delta: { ops: [
-      {insert: 'Consecutive list elements'},
-      {insert: '\n', attributes: {list: true}},
-      {insert: 'Should create a parent tag'},
-      {insert: '\n', attributes: {list: true}},
-      {insert: 'Consecutive bullet elements'},
-      {insert: '\n', attributes: {bullet: true}},
-      {insert: 'Should create a parent tag'},
-      {insert: '\n', attributes: {bullet: true}}
+      { insert: 'Consecutive list elements' },
+      { insert: '\n', attributes: { list: true } },
+      { insert: 'Should create a parent tag' },
+      { insert: '\n', attributes: { list: true } },
+      { insert: 'Consecutive bullet elements' },
+      { insert: '\n', attributes: { bullet: true } },
+      { insert: 'Should create a parent tag' },
+      { insert: '\n', attributes: { bullet: true } }
     ]},
     expected:
       '<ol><li>Consecutive list elements</li>' +
@@ -120,10 +120,10 @@ exports.tests = [
   {
     desc: 'Links',
     delta: { ops: [
-      {attributes:{bold:true},insert:'hello'},
-      {insert:' '},
-      {attributes:{link:'http://vox.com'},insert:'world'},
-      {insert:' this works...?\n'}
+      { attributes: { bold: true }, insert:'hello' },
+      { insert: ' ' },
+      { attributes: { link: 'http://vox.com' }, insert:'world' },
+      { insert:' this works...?\n' }
     ]},
     expected:
       '<div><b>hello</b> <a href="http://vox.com">world</a> this works...?</div>'
@@ -131,10 +131,10 @@ exports.tests = [
   {
     desc: 'Link inside list',
     delta: { ops: [
-      {insert: 'Some text '},
-      {insert: 'a link', attributes: {link: 'http://vox.com'}},
-      {insert: ' more text'},
-      {insert: '\n', attributes: {list: true}}
+      { insert: 'Some text ' },
+      { insert: 'a link', attributes: { link: 'http://vox.com' } },
+      { insert: ' more text' },
+      { insert: '\n', attributes: { list: true } }
     ]},
     expected:
       '<ol><li>Some text <a href="http://vox.com">a link</a> more text</li></ol>'
@@ -142,8 +142,8 @@ exports.tests = [
   {
     desc: 'Modify parent',
     delta: { ops: [
-      {insert: 'hello world', attributes: { parent: 'article' } },
-      {insert: '\n', attributes: { firstheader: true } }
+      { insert: 'hello world', attributes: { parent: 'article' } },
+      { insert: '\n', attributes: { firstheader: true } }
     ]},
     expected:
       '<h1>hello world</h1>'
@@ -151,10 +151,10 @@ exports.tests = [
   {
     desc: 'Custom formats',
     delta: { ops: [
-      {insert: 'Hello World!', attributes: {reverse: true}},
-      {insert: '\n'},
-      {insert: 'Foo Bar Baz', attributes: {bold: true, repeat: 3}},
-      {insert: '\n', attributes: { data: {foo: 'bar'}}}
+      { insert: 'Hello World!', attributes: { reverse: true } },
+      { insert: '\n' },
+      { insert: 'Foo Bar Baz', attributes: { bold: true, repeat: 3 } },
+      { insert: '\n', attributes: { data: { foo: 'bar' } } }
     ]},
     expected:
       '<div>!dlroW olleH</div>' +
@@ -162,13 +162,13 @@ exports.tests = [
   },
   {
     desc: 'Change default blockTag',
-    delta: { ops: [{insert: 'Hello world'}]},
+    delta: { ops: [{ insert: 'Hello world' }]},
     opts: { blockTag: 'P' },
     expected: '<p>Hello world</p>'
   },
   {
     desc: 'Line formats with no contents',
-    delta: { ops: [{insert: '\n', attributes: {firstheader: true} }] },
+    delta: { ops: [{ insert: '\n', attributes: { firstheader: true } }] },
     expected: '<h1></h1>'
   }
 ];
