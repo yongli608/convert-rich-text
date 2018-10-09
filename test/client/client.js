@@ -10,7 +10,7 @@ function runTest(test) {
     if (!test.hasOwnProperty('opts')) {
       test.opts = {};
     }
-    var result = convert(test.delta, formats, test.opts);
+    var result = convert.toHtml(test.delta, formats, test.opts);
     if (typeof test.expected === 'object') {
       assert.equal(result, test.expected.client);
     } else {
@@ -25,7 +25,7 @@ describe('client-side', function() {
 
   it('throws an error for a delta with non-inserts', function() {
     assert.throws(function() {
-      convert({ ops: [{ insert: 'abc' }, { retain: 3 }] }, formats, {});
+      convert.toHtml({ ops: [{ insert: 'abc' }, { retain: 3 }] }, formats, {});
     }, 'Cannot convert delta with non-insert operations');
   });
 });
