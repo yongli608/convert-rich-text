@@ -101,7 +101,7 @@ attribute-, class- and style-based formats wrap text with an inline element if t
 You can change these tags with the `blockTag` and `inlineTag` options:
 
 ```javascript
-convert.toHtml(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
+convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 ```
 
 ## Changelog
