@@ -106,6 +106,11 @@ convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 
 ## Changelog
 
+- `5.0.1` Update to rendered `class` names for drop caps
+- `5.0.0` Move opinionated export formats from content-api to convert-rich-text.
+- `4.0.0` Bump node version requirements, update object format to match Quill, move repo to voxmedia fork
+- `3.0.0` Update jsdom version
+- `2.0.3` Update `parentTag` logic
 - `2.0.2` [Relax jsdom and node version requirements]
 - `2.0.0` [Server-side support via jsdom](https://github.com/thomsbg/convert-rich-text/pull/2), node version locked to <=0.12
 - `1.2.1` Beginning of changelog
