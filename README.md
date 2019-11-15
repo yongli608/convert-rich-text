@@ -106,6 +106,7 @@ convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 
 ## Changelog
 
+- `5.2.0` Adds Tools component for This Old House
 - `5.1.0` Adds Project Details component for This Old House
 - `5.0.1` Update to rendered `class` names for drop caps
 - `5.0.0` Move opinionated export formats from content-api to convert-rich-text.
