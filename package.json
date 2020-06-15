@@ -1,6 +1,6 @@
 {
   "name": "convert-rich-text",
-  "version": "5.3.0",
+  "version": "5.4.0",
   "description": "Convert an insert-only rich-text delta into HTML",
   "main": "index.js",
   "browser": "browser.js",
@@ -26,8 +26,8 @@
   },
   "homepage": "https://github.com/voxmedia/convert-rich-text",
   "dependencies": {
-    "jsdom": "^11.6.2",
-    "lodash": "^3.6.0"
+    "jsdom": "^16.2.2",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "chai": "^2.2.0",

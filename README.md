@@ -2,12 +2,12 @@
 
 Convert a [rich-text](https://github.com/ottypes/rich-text) document (i.e. insert-only delta) into HTML.
 
-[![Build Status](https://travis-ci.org/thomsbg/convert-rich-text.svg?branch=master)](https://travis-ci.org/thomsbg/convert-rich-text)
+[![Build Status](https://travis-ci.org/voxmedia/convert-rich-text.svg?branch=master)](https://travis-ci.org/voxmedia/convert-rich-text)
 
 ## Install
 
 ```bash
-$ npm install [--save] convert-rich-text
+$ yarn add convert-rich-text
 ```
 
 ## Usage
@@ -106,6 +106,7 @@ convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 
 ## Changelog
 
+- `5.4.0` Update jsdom and lodash dependencies
 - `5.3.0` Adds support for Pym.js component
 - `5.2.0` Adds Tools component for This Old House
 - `5.1.0` Adds Project Details component for This Old House
