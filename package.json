@@ -6,7 +6,7 @@
   "browser": "browser.js",
   "scripts": {
     "lint": "jshint --verbose .",
-    "test": "npm run lint && NODE_ENV=test karma start && NODE_ENV=test mocha test/server/*.js -R spec"
+    "test": "yarn run lint && NODE_ENV=test karma start && NODE_ENV=test mocha test/server/*.js -R spec"
   },
   "repository": {
     "type": "git",
