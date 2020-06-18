@@ -1,8 +1,6 @@
-# convert-rich-text
+# convert-rich-text [![Build Status][ci-image]][ci-url] [![Version][version-image]][version-url]
 
 Convert a [rich-text](https://github.com/ottypes/rich-text) document (i.e. insert-only delta) into HTML.
-
-[![Build Status](https://travis-ci.org/voxmedia/convert-rich-text.svg?branch=master)](https://travis-ci.org/voxmedia/convert-rich-text)
 
 ## Install
 
@@ -119,11 +117,19 @@ convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 - `2.0.0` [Server-side support via jsdom](https://github.com/thomsbg/convert-rich-text/pull/2), node version locked to <=0.12
 - `1.2.1` Beginning of changelog
 
-## Development
+## Contributing
 
-Run `npm start` to spin up a static web server and watchify.
-Open http://localhost:8080/test in a browser to run and debug tests.
+Please see [CONTRIBUTING](CONTRIBUTING.md) for our contributing guidelines
 
 ## Credit
 
 Thank you [@kbjr](https://github.com/kbjr) for https://github.com/UmbraEngineering/quilljs-renderer on which this project is forked.
+
+## License
+
+See the [LICENSE](LICENSE) file for license rights and limitations (MIT).
+
+[ci-image]: https://img.shields.io/travis/voxmedia/convert-rich-text/master
+[ci-url]: https://travis-ci.org/github/voxmedia/convert-rich-text
+[version-image]: https://img.shields.io/npm/v/convert-rich-text
+[version-url]: https://www.npmjs.com/package/convert-rich-text
