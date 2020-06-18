@@ -1,24 +1,16 @@
-var webpackConfig = require('./webpack.conf');
-
 module.exports = function(config) {
   config.set({
-    basePath: '',
-    browsers: ['PhantomJS'],
-    frameworks: ['mocha', 'chai', 'phantomjs-shim'],
-    plugins: [
-      'karma-phantomjs-shim',
-      'karma-phantomjs-launcher',
-      'karma-webpack',
-      'karma-mocha',
-      'karma-chai'
-    ],
+    frameworks: ['mocha', 'chai'],
     files: ['test/client/*.js'],
     preprocessors: {
       'test/client/*.js': ['webpack']
     },
     reporters: ['dots'],
-    webpack: webpackConfig,
-    webpackMiddleware: { noInfo: true },
+    browsers: ['ChromeHeadless'],
+    port: 9876,
+    colors: true,
+    webpack: { mode: 'development' },
+    webpackMiddleware: { stats: 'errors-only' },
     singleRun: true
   });
 };

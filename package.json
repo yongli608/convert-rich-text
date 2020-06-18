@@ -6,7 +6,9 @@
   "browser": "browser.js",
   "scripts": {
     "lint": "jshint --verbose .",
-    "test": "yarn run lint && NODE_ENV=test karma start && NODE_ENV=test mocha test/server/*.js -R spec"
+    "test-client": "NODE_ENV=test karma start",
+    "test-server": "NODE_ENV=test mocha test/server/*.js -R spec",
+    "test": "yarn run lint && yarn run test-client && yarn run test-server"
   },
   "repository": {
     "type": "git",
@@ -30,17 +32,14 @@
     "lodash": "^4.17.15"
   },
   "devDependencies": {
-    "chai": "^2.2.0",
-    "jshint": "^2.7.0",
-    "karma": "^0.13.22",
+    "chai": "^4.2.0",
+    "jshint": "^2.11.1",
+    "karma": "^5.1.0",
     "karma-chai": "^0.1.0",
-    "karma-mocha": "^0.2.2",
-    "karma-phantomjs-launcher": "^1.0.0",
-    "karma-phantomjs-shim": "^1.2.0",
-    "karma-source-map-support": "^1.1.0",
-    "karma-webpack": "^1.7.0",
-    "mocha-phantomjs": "^3.5.3",
-    "phantomjs-prebuilt": "^2.1.7",
-    "webpack": "^1.12.15"
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-mocha": "^2.0.1",
+    "karma-webpack": "^4.0.2",
+    "mocha": "^8.0.1",
+    "webpack": "^4.43.0"
   }
 }
