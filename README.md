@@ -104,10 +104,11 @@ convert(delta, formats, { blockTag: 'FIGURE', inlineTag: 'INS' });
 
 ## Changelog
 
+- `5.4.1` Update dev dependencies to address security vulnerabilities
 - `5.4.0` Update jsdom and lodash dependencies
-- `5.3.0` Adds support for Pym.js component
-- `5.2.0` Adds Tools component for This Old House
-- `5.1.0` Adds Project Details component for This Old House
+- `5.3.0` Add support for Pym.js component
+- `5.2.0` Add Tools component for This Old House
+- `5.1.0` Add Project Details component for This Old House
 - `5.0.1` Update to rendered `class` names for drop caps
 - `5.0.0` Move opinionated export formats from content-api to convert-rich-text.
 - `4.0.0` Bump node version requirements, update object format to match Quill, move repo to voxmedia fork
